@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- mapquest links next 2 lines -->
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css">
+    <title>Weather Journal App</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-title">
+        <i class="weath-icon fas fa-temperature-high fa-2x"></i>
+        <i class="weath-icon far fa-snowflake fa-2x"></i>
+        <h1 class="head-title">WEATHER JOURNAL APP</h1>
+        <i class="weath-icon fas fa-cloud fa-2x"></i>
+        <i class="weath-icon fas fa-sun fa-2x"></i>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+
+        <header class="description"><h2>Please enter how you were feeling today in this location</h2></header>
+
+        <div class="questions">
+            <div class="zip-section">
+                <label class="zip-label" for="zip"><h2>Enter Zip Code</h2></label>
+                <input type="text" id="zip" placeholder="enter zip code here">
+            </div>
+    
+            <div class="feeling-section">
+                <label class="feeling-label" for="feeling"><h2>How are you feeling today?</h2></label>
+                <textarea name="feelings" id="feeling" cols="30" rows="10" placeholder="enter how you are feeling today"></textarea>
+            </div>
+        </div>
+        
+        <button id="generate" type="submit">Generate</button>
+
+        <article>
+            <div>
+                <h2 class="entry-title text-center hide">Most Recent Entry</h2>
+            </div>
+            <div class="ui-info">
+                <div class="ui-data hide" id="date"></div>
+                <div class="ui-data hide" id="city"></div>
+                <div class="ui-data hide" id="temp"></div>
+                <div class="ui-data hide" id="speed"></div>
+                <div class="ui-data hide" id="pressure"></div>
+                <div class="ui-data hide" id="humidity"></div>
+            </div>
+            
+            <div class="ui-data hide" id="content"></div>
+            <div class="hide" id="error"></div>
+        </article>
+            
+    </main>
+    
+    <!-- Map -->
+    <div class="ui-data hide" id="map"></div>
+        
+    <!-- Footer -->
+    <footer>
+        <div class="footer-title">
+            <h2>Weather Journal App</h2>
+            <p>&copy; 2021</p>
+        </div>
+        <ul>
+            <li><a href="https://github.com/JosephHowardWong" target="_blank"><i class="social-icon fab fa-github fa-2x"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/joseph-wong-1742342/" target="_blank"><i class="social-icon fab fa-linkedin fa-2x"></i></a></li>
+            <li><a href="https://www.facebook.com/joseph.wong.5245/" target="_blank"><i class="social-icon fab fa-facebook fa-2x"></i></a></li>
+            <li><a href="https://www.youtube.com/" target="_blank"><i class="social-icon fab fa-youtube fa-2x"></i></a></li>
+        </ul>
+    </footer>
+    
+    <script src="app.js"></script>
+</body>
+</html>
