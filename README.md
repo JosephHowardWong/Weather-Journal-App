@@ -39,3 +39,5 @@ The following code was used to generate a local map taken from the sample code a
 where latitude and longitude were obtained from the Open Weather data and then subsequently passed in to the mapquest API to generate the map
 
 I learned a lot from Brad Traversy's YouTube video on maps [https://www.youtube.com/watch?v=9FQrFah9rnc&t=2627s]
+
+### Project is hosted at [https://weatherjournalapp-udacity.herokuapp.com/](https://weatherjournalapp-udacity.herokuapp.com/)
