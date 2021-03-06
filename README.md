@@ -8,11 +8,9 @@
 
 - create a front end website with form fields prompting the user to type in a zipcode and how they were feeling on that day
 
-- use that zip code and a valid API key to fetch weather data from [Open Weather](https://openweathermap.org/)
+- semd post request to backend express with zip code
 
-- send the data received from Open Weather via a post request to the back end express server
-
-- make a get request to the back end express server to obtain data for front end use
+- make fetch request to [Open Weather](https://openweathermap.org/) with zip code
 
 - update the UI using server data and the users feelings
 

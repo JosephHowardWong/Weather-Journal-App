@@ -1,66 +1,57 @@
-const OW_KEY = '';
-const MAPQUEST_KEY = '';
 
-const zip = document.querySelector('#zip');
+let today = new Date();
+let dd = today.getDate();
+let mm = today.getMonth() + 1; //January is 0!
+let yyyy = today.getFullYear();
+if(dd<10){
+    dd='0'+dd
+}
+if(mm<10){
+    mm='0'+mm
+}
+today = yyyy+'-'+mm+'-'+dd;
 
-const feeling = document.querySelector('#feeling');
 
 const btn = document.querySelector('#generate');
 
-const fetchReq = async (url) => {
-    const resp = await fetch(url);
-    if(resp.status == 200) {
-        const data = await resp.json();
-        return data;
-    } else {
+            
+btn.addEventListener('click', async () => {
+                
+    const zip = document.querySelector('#zip').value;
+    const feeling = document.querySelector('#feeling').value;
+
+    const resp1 = await postToServe('/getWeather', {zip});
+    // console.log(resp1)
+
+    if(resp1.message == 'city not found') {
+
         const failedFetch = document.querySelector('#error');
         failedFetch.classList.remove('hide');
-        failedFetch.innerHTML = `<i class="fas fa-exclamation-triangle fa-2x"></i>Request to Open Weather failed with ${resp.status} please try again`;
+        failedFetch.innerHTML = '<i class="fas fa-exclamation-triangle fa-2x"></i>City not found on Open Weather, please try again';
+
+    } else {
+
+        const {humidity} = resp1;
+        const {lat} = resp1;
+        const {lon} = resp1;
+        const {name} = resp1;
+        const {pressure} = resp1;
+        const {speed} = resp1;
+        const {temp} = resp1;
+        const {MAPQUEST_KEY} = resp1;
+        
+        // console.log(lat,lon, name, temp, speed, pressure, humidity, MAPQUEST_KEY);
+        
+        updateUI({humidity, lat, lon, name, pressure, speed, temp}, feeling);
+        
+        loadMap(lat, lon, MAPQUEST_KEY);
     }
-}
-
-
-// 1   fetching data from Open Weather
-// 2   posting to server
-// 3   fetching from server
-// 4   updating UI with data
-const updateJournal = async (e) => {
-    e.preventDefault();
-    
-    const userFeel = feeling.value;
-    const zipCode = zip.value;
-    
-    const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${OW_KEY}&units=imperial`;
-    
-    const weathInfo = await fetchReq(url);
-    
-    const {lat} = weathInfo.coord;
-    const {lon} = weathInfo.coord;
-    const {name} = weathInfo;
-    const {temp} = weathInfo.main;
-    const {pressure} = weathInfo.main;
-    const {humidity} = weathInfo.main;
-    const {speed} = weathInfo.wind;
-
-    let d = new Date();
-    let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
-
-    const message = await postToServe('/add', {newDate, lat, lon, name, temp, pressure, humidity, speed });
-
-    const DataFromServ = await fetch('/retrieve').then( (serverData) => serverData.json());
-
-    updateUI(DataFromServ, userFeel);    
-}
-
-
-// on buttong click, do necessary steps and update UI
-btn.addEventListener('click', updateJournal);
-
+})
 
 // update UI function
-const updateUI = ({newDate, humidity, lat, lon, name, pressure, speed, temp}, userFeel) => {
+const updateUI = ({humidity, lat, lon, name, pressure, speed, temp}, userFeel) => {
 
-    // console.log(newDate, humidity, lat, lon, name, pressure, speed, temp, userFeel);
+    // console.log(humidity, lat, lon, name, pressure, speed, temp, userFeel);
     const entryTitle = document.querySelector('.entry-title');
     entryTitle.classList.remove('hide');
 
@@ -73,7 +64,7 @@ const updateUI = ({newDate, humidity, lat, lon, name, pressure, speed, temp}, us
     const pressEl = document.querySelector('#pressure');
     const errorEl = document.querySelector('#error');
 
-    dateEl.innerHTML = `Date:   ${newDate}`;
+    dateEl.innerHTML = `Date:   ${today}`;
     cityEl.innerHTML = `City:   ${name}`;
     tempEl.innerHTML = `Temperature:   ${temp} degrees Fahrenheit`;
     humidEl.innerHTML = `Humidity:   ${humidity}%`;
@@ -91,7 +82,6 @@ const updateUI = ({newDate, humidity, lat, lon, name, pressure, speed, temp}, us
         }
     })
 
-    loadMap(lat, lon);
 }
 
 // post to server
@@ -107,7 +97,9 @@ const postToServe = async (url='', data={}) => {
     })
 
     try{
+        // console.log(resp)
         const response = await resp.json();
+        // console.log(response)
         return response;
     }catch(error) {
         console.log(`error: ${error}`);
@@ -117,7 +109,7 @@ const postToServe = async (url='', data={}) => {
 
 // loading map from mapquest API
 // this code was copied and pasted from mapquest sample code
-const loadMap = (lati, long) => {
+const loadMap = (lati, long, MAPQUEST_KEY) => {
     L.mapquest.key = MAPQUEST_KEY;
 
     var map = L.mapquest.map('map', {
